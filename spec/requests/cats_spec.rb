@@ -57,7 +57,7 @@ RSpec.describe "Cats", type: :request do
       expect(cat.errors[:image]).to_not be_empty
     end
 
-    it "doesn't careate a cat without a name" do
+    it "doesn't create a cat without a name" do
       cat_params = {
         cat: {
           age: 2,
@@ -71,9 +71,55 @@ RSpec.describe "Cats", type: :request do
       expect(json['name']).to include "can't be blank"
     end
     
+    it 'doesnt create a cat without a age' do
+      cat_params = {
+        cat: {
+          name: 'Piccolo',
+          enjoys: 'walks in the park',
+          image: 'www.image.com'
+        }
+      }
+      post '/cats', params: cat_params
+      expect(response.status).to eq 422
+      json = JSON.parse(response.body)
+      expect(json['age']).to include "can't be blank"
+    end
 
+    it 'doesnt create a cat without a enjoys' do
+      cat_params = {
+        cat: {
+          name: 'Piccolo',
+          age: 1,
+          image: 'www.image.com'
+        }
+      }
+      post '/cats', params: cat_params
+      expect(response.status).to eq 422
+      json = JSON.parse(response.body)
+      expect(json['enjoys']).to include "can't be blank"
+    end
+
+    it 'doesnt create a cat without a image' do
+      cat_params = {
+        cat: {
+          name: 'Piccolo',
+          age: 1,
+          enjoys: 'coding'
+        }
+      }
+      post '/cats', params: cat_params
+      expect(response.status).to eq 422
+      json = JSON.parse(response.body)
+      expect(json['image']).to include "can't be blank"
+    end
   
+    it 'should have an enjoys statment >= 10' do
+      cat = Cat.create(name:'Mr. Popo', age:100, enjoys: 'less<10', image: 'url')
+      expect(cat.errors[:enjoys]).to_not be be_empty
+    end
 end
+
+
 
 
 
