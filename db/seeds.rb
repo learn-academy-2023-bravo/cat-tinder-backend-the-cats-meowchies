@@ -14,7 +14,8 @@ cats = [
         {
             name:'King Kai',
             age:7,
-            enjoys:'https://tse4.mm.bing.net/th?id=OIP.46n0q-VhAUTrlukZEUX9fQHaFj&pid=Api&P=0'
+            enjoys:'magazines',
+            image:'https://tse4.mm.bing.net/th?id=OIP.46n0q-VhAUTrlukZEUX9fQHaFj&pid=Api&P=0'
         },
         {
             name:'Vegeta',

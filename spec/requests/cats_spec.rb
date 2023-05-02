@@ -35,6 +35,46 @@ RSpec.describe "Cats", type: :request do
       expect(cat.name).to eq 'Krillin'
     end
   end
+
+  
+    it "should validate name" do
+      cat = Cat.create(age:2, enjoys:"playing with dogs", image:"url.com")
+      expect(cat.errors[:name]).to_not be_empty
+    end
+
+    it "should validate age" do
+      cat = Cat.create(name:"dude", enjoys:"playing with dogs", image:"url.com")
+      expect(cat.errors[:age]).to_not be_empty
+    end
+
+    it "should validate enjoys" do
+      cat = Cat.create(name:"dude", age:2, image:"url.com")
+      expect(cat.errors[:enjoys]).to_not be_empty
+    end
+
+    it "should validate image" do
+      cat = Cat.create(name:"dude", age:2, enjoys:"chicken")
+      expect(cat.errors[:image]).to_not be_empty
+    end
+
+    it "doesn't careate a cat without a name" do
+      cat_params = {
+        cat: {
+          age: 2,
+          enjoys: 'walks in the park',
+          image: 'www.image.com'
+        }
+      }
+      post '/cats', params: cat_params
+      expect(response.status).to eq 422
+      json = JSON.parse(response.body)
+      expect(json['name']).to include "can't be blank"
+    end
+    
+
+  
 end
+
+
 
 
